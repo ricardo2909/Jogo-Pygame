@@ -23,3 +23,5 @@ while game:
 
 image = pygame.image.load('imagem rua.jpg').convert()
 image = pygame.transform.scale(image, (125, 166))
+
+print('py')
