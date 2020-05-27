@@ -7,7 +7,20 @@ HEIGHT = 600
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Crossy Froger')
 
+backgroud = pygame.image.load('imagem_rua.jpg').convert()
+backgroud_escala = pygame.transform.scale(backgroud, (700, 600))
+carro_1 = pygame.image.load('car1.png').convert()
+carro_1_escala = pygame.transform.scale(carro_1, (55, 30))
+'''carro_2 = pygame.image.load('car2.png')
+carro_3 = pygame.image.load('car3.png')
+carro_4 = pygame.image.load('car4.png')'''
+
 game = True
+
+carro_1_x = 50
+carro_1_y = 550
+carro_1_speedx = 2
+carro_1_speedy = 0
 
 while game:
     for event in pygame.event.get():
@@ -15,13 +28,11 @@ while game:
             game = False
 
     window.fill((255, 255, 255))
-    cor = (255, 0, 0)
-    vertices = [(250, 0), (500, 200), (250, 400), (0, 200)]
-    pygame.draw.polygon(window, cor, vertices)
+    window.blit(backgroud, (0, 0))
+    window.blit(carro_1, (10,46))
+    
+    '''window.blit(carro_2, (80, 80))
+    window.blit(carro_3, (140, 140))
+    window.blit(carro_4, (210, 210))'''
 
     pygame.display.update()
-
-image = pygame.image.load('imagem rua.jpg').convert()
-image = pygame.transform.scale(image, (125, 166))
-
-print('py')
