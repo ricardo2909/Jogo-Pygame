@@ -95,12 +95,37 @@ game = True
 clock = pygame.time.Clock()
 FPS = 25
 
-carro1 = cars1(carro_1)
-carro2 = cars2(carro_2)
-carro3 = cars1(carro_3)
-carro4 = cars2(carro_4)
+all_sprites = pygame.sprite.Group()
+all_cars1 = pygame.sprite.Group()
+all_cars3 = pygame.sprite.Group()
+all_cars2 = pygame.sprite.Group()
+all_cars4 = pygame.sprite.Group()
+
 
 jogador=raposa(fox)
+all_sprites.add(jogador)
+
+for i in range(3):
+    carro1 = cars1(carro_1)
+    all_sprites.add(carro1)
+    all_cars1.add(carro1)
+
+for i in range(3):
+    carro3 = cars1(carro_3)
+    all_sprites.add(carro3)
+    all_cars3.add(carro3)
+
+for i in range(3):
+    carro2 = cars2(carro_2)
+    all_sprites.add(carro2)
+    all_cars3.add(carro2)
+
+for i in range(3):
+    carro4 = cars2(carro_4)
+    all_sprites.add(carro4)
+    all_cars3.add(carro4)
+
+
 
 while game:
     clock.tick(FPS)
@@ -129,21 +154,28 @@ while game:
             if event.key == pygame.K_DOWN:
                 jogador.rect.y = jogador.rect.y
 
+    all_sprites.update()
 
+    hits1 = pygame.sprite.spritecollide(jogador, all_cars1, True)
+    if len(hits1)>0:
+        game = False
+    
+    hits3 = pygame.sprite.spritecollide(jogador, all_cars3, True)
+    if len(hits3)>0:
+        game = False
+    
+    hits2 = pygame.sprite.spritecollide(jogador, all_cars2, True)
+    if len(hits2)>0:
+        game = False
+    
+    hits4 = pygame.sprite.spritecollide(jogador, all_cars4, True)
+    if len(hits4)>0:
+        game = False
 
-
-    carro1.update()
-    carro2.update()
-    carro3.update()
-    carro4.update()
-    jogador.update()
+    
 
     window.fill((255, 255, 255))
     window.blit(backgroud, [0, 0])
-    window.blit(carro1.image, carro1.rect)
-    window.blit(carro2.image, carro2.rect)
-    window.blit(carro3.image, carro3.rect)
-    window.blit(carro4.image, carro4.rect)
-    window.blit(jogador.image, jogador.rect)
+    all_sprites.draw(window)
 
     pygame.display.update()
