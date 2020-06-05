@@ -67,6 +67,29 @@ class cars2(pygame.sprite.Sprite):
             self.speedx = random.randint(-9, -5)
             self.speedy = 0
 
+class raposa(pygame.sprite.Sprite):
+    def __init__(self, img):
+        pygame.sprite.Sprite.__init__(self)
+
+        self.image = img
+        self.rect = self.image.get_rect()
+        self.rect.x = 350
+        self.rect.y = 540
+        self.speedx = 0
+        self.speedy = 0
+
+    def update(self):
+        self.rect.x += self.speedx
+        self.rect.y += self.speedy
+
+        if self.rect.top < -40:
+            self.rect.x = 350
+            self.rect.y = 540
+            self.speedx = 0
+            self.speedy = 0
+        
+
+
 game = True
 
 clock = pygame.time.Clock()
@@ -77,6 +100,8 @@ carro2 = cars2(carro_2)
 carro3 = cars1(carro_3)
 carro4 = cars2(carro_4)
 
+jogador=raposa(fox)
+
 while game:
     clock.tick(FPS)
 
@@ -84,10 +109,34 @@ while game:
         if event.type == pygame.QUIT:
             game = False
 
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                jogador.rect.x -= 65 
+            if event.key == pygame.K_RIGHT:
+                jogador.rect.x += 65
+            if event.key == pygame.K_UP:
+                jogador.rect.y -=65
+            if event.key == pygame.K_DOWN:
+                jogador.rect.y +=65
+        
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT:
+                jogador.rect.x = jogador.rect.x 
+            if event.key == pygame.K_RIGHT:
+                jogador.rect.x = jogador.rect.x
+            if event.key == pygame.K_UP:
+                jogador.rect.y = jogador.rect.y
+            if event.key == pygame.K_DOWN:
+                jogador.rect.y = jogador.rect.y
+
+
+
+
     carro1.update()
     carro2.update()
     carro3.update()
     carro4.update()
+    jogador.update()
 
     window.fill((255, 255, 255))
     window.blit(backgroud, [0, 0])
@@ -95,6 +144,6 @@ while game:
     window.blit(carro2.image, carro2.rect)
     window.blit(carro3.image, carro3.rect)
     window.blit(carro4.image, carro4.rect)
-    window.blit(fox, (325, 535))
+    window.blit(jogador.image, jogador.rect)
 
     pygame.display.update()
