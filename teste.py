@@ -21,7 +21,7 @@ carro_3 = pygame.transform.scale(carro_3, (car_WIDTH, car_HEIGHT))
 carro_4 = pygame.image.load('car4.png').convert_alpha()
 carro_4 = pygame.transform.scale(carro_4, (car_WIDTH, car_HEIGHT))
 fox = pygame.image.load('fox.jpg').convert_alpha()
-fox = pygame.transform.scale(fox, (90, 45))
+fox = pygame.transform.scale(fox, (60, 30))
 
 lista_carro = [5, 70, 135, 200, 270, 335, 400, 465]
 
