@@ -4,7 +4,7 @@ import random
 pygame.init()
 
 WIDTH = 700
-HEIGHT = 600
+HEIGHT = 660
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Crossy Froger')
 
@@ -33,6 +33,7 @@ class cars1(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = -80
         self.rect.y = random.choice(lista_carro)
+        lista_carro.remove(self.rect.y)
         self.speedx = random.randint(5, 9)
         self.speedy = 0
 
@@ -41,8 +42,10 @@ class cars1(pygame.sprite.Sprite):
         self.rect.y += self.speedy
 
         if self.rect.right > car_WIDTH + WIDTH:
+            lista_carro.append(self.rect.y)
             self.rect.x = -80
             self.rect.y = random.choice(lista_carro)
+            lista_carro.remove(self.rect.y)
             self.speedx = random.randint(5, 9)
             self.speedy = 0
 
@@ -54,6 +57,7 @@ class cars2(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = 780
         self.rect.y = random.choice(lista_carro)
+        lista_carro.remove(self.rect.y)
         self.speedx = random.randint(-9, -5)
         self.speedy = 0
 
@@ -62,8 +66,10 @@ class cars2(pygame.sprite.Sprite):
         self.rect.y += self.speedy
 
         if self.rect.left < -80:
+            lista_carro.append(self.rect.y)
             self.rect.x = 780
             self.rect.y = random.choice(lista_carro)
+            lista_carro.remove(self.rect.y)
             self.speedx = random.randint(-9, -5)
             self.speedy = 0
 
@@ -73,8 +79,8 @@ class raposa(pygame.sprite.Sprite):
 
         self.image = img
         self.rect = self.image.get_rect()
-        self.rect.x = 350
-        self.rect.y = 540
+        self.rect.x = 300
+        self.rect.y = 520
         self.speedx = 0
         self.speedy = 0
 
@@ -83,13 +89,24 @@ class raposa(pygame.sprite.Sprite):
         self.rect.y += self.speedy
 
         if self.rect.top < -40:
-            self.rect.x = 350
-            self.rect.y = 540
+            self.rect.x = 300
+            self.rect.y = 520
             self.speedx = 0
             self.speedy = 0
+
+class fire(pygame.sprite.Sprite):
+    def __init__(self, img):
+        pygame.sprite.Sprite.__init__(self)
+
+        self.image = img
+        self.rect = self.image.get_rect()
+        self.rect.x = random.randint(1, 600)
+        self.rect.y = random.choice(lista_carro)
+
+    def update(self):
+        self.rect.x += 
+        self.rect.y += 
         
-
-
 game = True
 
 clock = pygame.time.Clock()
@@ -100,32 +117,35 @@ all_cars1 = pygame.sprite.Group()
 all_cars3 = pygame.sprite.Group()
 all_cars2 = pygame.sprite.Group()
 all_cars4 = pygame.sprite.Group()
+all_fogos = pygame.sprite.Group()
 
-
-jogador=raposa(fox)
+jogador = raposa(fox)
 all_sprites.add(jogador)
 
-for i in range(4):
+for i in range(2):
     carro1 = cars1(carro_1)
     all_sprites.add(carro1)
     all_cars1.add(carro1)
 
-for i in range(4):
+for i in range(1):
     carro3 = cars1(carro_3)
     all_sprites.add(carro3)
     all_cars3.add(carro3)
 
-for i in range(4):
+for i in range(2):
     carro2 = cars2(carro_2)
     all_sprites.add(carro2)
     all_cars3.add(carro2)
 
-for i in range(4):
+for i in range(1):
     carro4 = cars2(carro_4)
     all_sprites.add(carro4)
     all_cars3.add(carro4)
 
-
+for i in range(2):
+    fogos = fire(foguinho)
+    all_sprites.add(fogos)
+    all_fogos.add(fogos)
 
 while game:
     clock.tick(FPS)
@@ -157,22 +177,24 @@ while game:
     all_sprites.update()
 
     hits1 = pygame.sprite.spritecollide(jogador, all_cars1, True)
-    if len(hits1)>0:
+    if len(hits1) > 0:
         game = False
     
     hits3 = pygame.sprite.spritecollide(jogador, all_cars3, True)
-    if len(hits3)>0:
+    if len(hits3) > 0:
         game = False
     
     hits2 = pygame.sprite.spritecollide(jogador, all_cars2, True)
-    if len(hits2)>0:
+    if len(hits2) > 0:
         game = False
     
     hits4 = pygame.sprite.spritecollide(jogador, all_cars4, True)
-    if len(hits4)>0:
+    if len(hits4) > 0:
         game = False
 
-    
+    hits5 = pygame.sprite.spritecollide(jogador, all_fogos, True)
+    if len(hits5) > 0:
+        game = False
 
     window.fill((255, 255, 255))
     window.blit(backgroud, [0, 0])
