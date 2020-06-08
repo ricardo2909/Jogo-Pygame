@@ -22,8 +22,8 @@ carro_4 = pygame.image.load('car4.png').convert_alpha()
 carro_4 = pygame.transform.scale(carro_4, (car_WIDTH, car_HEIGHT))
 fox = pygame.image.load('Fox.png').convert_alpha()
 fox = pygame.transform.scale(fox, (90, 70))
-foguinho = pygame.image.load('animated fire.gif').convert_alpha()
-foguinho = pygame.transform.scale(foguinho, (350, 250))
+foguinho = pygame.image.load('animated fire.jpg').convert_alpha()
+foguinho = pygame.transform.scale(foguinho, (80, 50))
 
 lista_carro = [5, 70, 135, 200, 270, 335, 400, 465]
 
@@ -109,7 +109,7 @@ class fire(pygame.sprite.Sprite):
     def update(self):
         now = pygame.time.get_ticks()
 
-        if now - self.changed > 1000:
+        if now - self.changed > 3000:
             self.changed = now
             self.rect.x = random.randint(1, 600)
             self.rect.y = random.choice(lista_carro)
