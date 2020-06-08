@@ -102,10 +102,15 @@ class fire(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = random.randint(1, 600)
         self.rect.y = random.choice(lista_carro)
+        self.changed = pygame.time.get_ticks()
 
     def update(self):
-        self.rect.x += 
-        self.rect.y += 
+        now = pygame.time.get_ticks()
+
+        if now - self.changed > 1000:
+            self.changed = now
+            self.rect.x = random.randint(1, 600)
+            self.rect.y = random.choice(lista_carro)
         
 game = True
 
@@ -179,22 +184,27 @@ while game:
     hits1 = pygame.sprite.spritecollide(jogador, all_cars1, True)
     if len(hits1) > 0:
         game = False
+        print(1)
     
     hits3 = pygame.sprite.spritecollide(jogador, all_cars3, True)
     if len(hits3) > 0:
         game = False
+        print(3)
     
     hits2 = pygame.sprite.spritecollide(jogador, all_cars2, True)
     if len(hits2) > 0:
         game = False
+        print(2)
     
     hits4 = pygame.sprite.spritecollide(jogador, all_cars4, True)
     if len(hits4) > 0:
         game = False
+        print(4)
 
     hits5 = pygame.sprite.spritecollide(jogador, all_fogos, True)
     if len(hits5) > 0:
         game = False
+        print(5)
 
     window.fill((255, 255, 255))
     window.blit(backgroud, [0, 0])
