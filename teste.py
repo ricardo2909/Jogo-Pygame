@@ -20,8 +20,10 @@ carro_3 = pygame.image.load('car3.png').convert_alpha()
 carro_3 = pygame.transform.scale(carro_3, (car_WIDTH, car_HEIGHT))
 carro_4 = pygame.image.load('car4.png').convert_alpha()
 carro_4 = pygame.transform.scale(carro_4, (car_WIDTH, car_HEIGHT))
-fox = pygame.image.load('fox.jpg').convert_alpha()
-fox = pygame.transform.scale(fox, (60, 30))
+fox = pygame.image.load('Fox.png').convert_alpha()
+fox = pygame.transform.scale(fox, (90, 70))
+foguinho = pygame.image.load('animated fire.gif').convert_alpha()
+foguinho = pygame.transform.scale(foguinho, (350, 250))
 
 lista_carro = [5, 70, 135, 200, 270, 335, 400, 465]
 
