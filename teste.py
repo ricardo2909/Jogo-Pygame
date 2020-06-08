@@ -105,22 +105,22 @@ all_cars4 = pygame.sprite.Group()
 jogador=raposa(fox)
 all_sprites.add(jogador)
 
-for i in range(3):
+for i in range(4):
     carro1 = cars1(carro_1)
     all_sprites.add(carro1)
     all_cars1.add(carro1)
 
-for i in range(3):
+for i in range(4):
     carro3 = cars1(carro_3)
     all_sprites.add(carro3)
     all_cars3.add(carro3)
 
-for i in range(3):
+for i in range(4):
     carro2 = cars2(carro_2)
     all_sprites.add(carro2)
     all_cars3.add(carro2)
 
-for i in range(3):
+for i in range(4):
     carro4 = cars2(carro_4)
     all_sprites.add(carro4)
     all_cars3.add(carro4)
