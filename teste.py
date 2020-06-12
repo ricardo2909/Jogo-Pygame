@@ -30,6 +30,8 @@ score_font = pygame.font.Font('font/PressStart2P.ttf', 28)
 lista_carro = [5, 70, 135, 200, 270, 335, 400, 465]
 
 lives = 3
+AUMENTA_VIDA = 10000
+Aumenta_velo = 500
 
 class cars1(pygame.sprite.Sprite):
     def __init__(self, img):
@@ -42,10 +44,12 @@ class cars1(pygame.sprite.Sprite):
         lista_carro.remove(self.rect.y)
         self.speedx = random.randint(5, 9)
         self.speedy = 0
+        self.multiplicador = 1
 
     def update(self):
-        self.rect.x += self.speedx
-        self.rect.y += self.speedy
+        self.rect.x += self.speedx * self.multiplicador
+        self.rect.y += self.speedy * self.multiplicador
+
 
         if self.rect.right > car_WIDTH + WIDTH:
             lista_carro.append(self.rect.y)
@@ -66,10 +70,12 @@ class cars2(pygame.sprite.Sprite):
         lista_carro.remove(self.rect.y)
         self.speedx = random.randint(-9, -5)
         self.speedy = 0
+        self.multiplicador = 1
+    
 
     def update(self):
-        self.rect.x += self.speedx
-        self.rect.y += self.speedy
+        self.rect.x += self.speedx * self.multiplicador
+        self.rect.y += self.speedy * self.multiplicador
 
         if self.rect.left < -80:
             lista_carro.append(self.rect.y)
@@ -129,39 +135,29 @@ clock = pygame.time.Clock()
 FPS = 25
 
 all_sprites = pygame.sprite.Group()
-all_cars1 = pygame.sprite.Group()
-all_cars3 = pygame.sprite.Group()
-all_cars2 = pygame.sprite.Group()
-all_cars4 = pygame.sprite.Group()
+all_cars = pygame.sprite.Group()
 all_fogos = pygame.sprite.Group()
 
 jogador = raposa(fox)
 all_sprites.add(jogador)
 
-for i in range(2):
-    carro1 = cars1(carro_1)
+for i in range(3):
+    carro1 = cars1(random.choice([carro_1, carro_3]))
     all_sprites.add(carro1)
-    all_cars1.add(carro1)
+    all_cars.add(carro1)
 
-for i in range(1):
-    carro3 = cars1(carro_3)
-    all_sprites.add(carro3)
-    all_cars3.add(carro3)
 
-for i in range(2):
-    carro2 = cars2(carro_2)
+for i in range(3):
+    carro2 = cars2(random.choice([carro_2, carro_4]))
     all_sprites.add(carro2)
-    all_cars3.add(carro2)
+    all_cars.add(carro2)
 
-for i in range(1):
-    carro4 = cars2(carro_4)
-    all_sprites.add(carro4)
-    all_cars3.add(carro4)
-
-for i in range(2):
+for i in range(3):
     fogos = fire(foguinho, jogador)
     all_sprites.add(fogos)
     all_fogos.add(fogos)
+
+proxima_vida = AUMENTA_VIDA
 
 while game:
     clock.tick(FPS)
@@ -181,7 +177,7 @@ while game:
             if event.key == pygame.K_DOWN:
                 if jogador.rect.y < 520:
                     jogador.score -= 100
-                jogador.rect.y +=65
+                    jogador.rect.y +=65
         
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT:
@@ -195,7 +191,7 @@ while game:
 
     all_sprites.update()
 
-    hits1 = pygame.sprite.spritecollide(jogador, all_cars1, True)
+    hits1 = pygame.sprite.spritecollide(jogador, all_cars, False)
     if len(hits1) > 0:
         lives -= 1
         jogador.rect.x = 300
@@ -203,35 +199,8 @@ while game:
         jogador.score -= 200
         if lives == 0:
             game = False
-    
-    hits3 = pygame.sprite.spritecollide(jogador, all_cars3, True)
-    if len(hits3) > 0:
-        lives -= 1
-        jogador.rect.x = 300
-        jogador.rect.y = 520
-        jogador.score -= 200
-        if lives == 0:
-            game = False
-    
-    hits2 = pygame.sprite.spritecollide(jogador, all_cars2, True)
-    if len(hits2) > 0:
-        lives -= 1
-        jogador.rect.x = 300
-        jogador.rect.y = 520
-        jogador.score -= 200
-        if lives == 0:
-            game = False
-    
-    hits4 = pygame.sprite.spritecollide(jogador, all_cars4, True)
-    if len(hits4) > 0:
-        lives -= 1
-        jogador.rect.x = 300
-        jogador.rect.y = 520
-        jogador.score -= 200
-        if lives == 0:
-            game = False
 
-    hits5 = pygame.sprite.spritecollide(jogador, all_fogos, True)
+    hits5 = pygame.sprite.spritecollide(jogador, all_fogos, False)
     if len(hits5) > 0:
         lives -= 1
         jogador.rect.x = 300
@@ -239,6 +208,15 @@ while game:
         jogador.score -= 200
         if lives == 0:
             game = False
+    if jogador.score > Aumenta_velo:
+        for car in all_cars:
+            car.multiplicador += 2
+        Aumenta_velo += 500
+        
+
+    if jogador.score > proxima_vida:
+        lives += 1
+        proxima_vida += AUMENTA_VIDA
 
     window.fill((0, 0, 0))
     window.blit(backgroud, [0, 0])
