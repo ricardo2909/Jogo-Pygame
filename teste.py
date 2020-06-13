@@ -11,9 +11,6 @@ pygame.init()
 
 score_font = pygame.font.Font('font/PressStart2P.ttf', 28)
 
-'''rodando = 0
-pausado = 1'''
-
 def draw_text(text, font, color, surface, x, y):
     textobj = font.render(text, 1, color)
     textrect = textobj.get_rect()
@@ -24,27 +21,33 @@ click = False
 
 def main_menu(window):
     while True:
+
         window.fill((0, 0, 0))
-        draw_text('Welcome to Crossy Fox', score_font, (255, 255, 0), window, 65, 100)
+        draw_text('Welcome to Crossy Fox', score_font, (255, 255, 0), window, 65, 130)
         mx, my = pygame.mouse.get_pos()
 
         botao_1 = pygame.Rect(250, 300, 200, 50)
-        if botao_1.collidepoint((mx, my)):
-            if click:
-                game()
+        botao_2 = pygame.Rect(250, 450, 200, 50)
+
         pygame.draw.rect(window, (255, 0, 0), botao_1)
         draw_text('Start', score_font, (255, 255, 255), window, 285, 315)
 
-        click = False
+        pygame.draw.rect(window, (255, 0, 0), botao_2)
+        draw_text('Exit', score_font, (255, 255, 255), window, 295, 465)
+
+        if botao_1.collidepoint((mx, my)):
+            if click:
+                game()
+        if botao_2.collidepoint((mx, my)):
+            if click:
+                pygame.quit()
+
+        click = False 
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    pygame.quit()
-                    sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     click = True
@@ -52,12 +55,45 @@ def main_menu(window):
         pygame.display.update()
         mainclock.tick(60)
 
-'''def main_out():
+def main_out():
     while True:
-        window.fill((0, 0, 0))
-        draw_text('You Lose', score_fontt, (255, 255, 0), window, 100, 100)
+        som_fundo = pygame.mixer.music.stop()
 
-        botao_3'''
+        window.fill((0, 0, 0))
+        draw_text('GAME OVER', score_font, (255, 255, 0), window, 225, 130)
+        mx, my = pygame.mouse.get_pos()
+
+        botao_3 = pygame.Rect(200, 300, 300, 50)
+        botao_4 = pygame.Rect(250, 450, 200, 50)
+
+        pygame.draw.rect(window, (255, 0, 0), botao_3)
+        draw_text('Play Again', score_font, (255, 255, 255), window, 215, 315)
+
+        pygame.draw.rect(window, (255, 0, 0), botao_4)
+        draw_text('Exit', score_font, (255, 255, 255), window, 295, 465)
+
+        #ver botao para funcionar
+        #colocar placar
+
+        click = False
+
+        if botao_3.collidepoint((mx, my)):
+            if click:
+                game()
+        if botao_4.collidepoint((mx, my)):
+            if click:
+                pygame.quit()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    click = True
+
+        pygame.display.update()
+        mainclock.tick(60)
 
 def game():
     running = True
@@ -67,25 +103,28 @@ def game():
 
         car_WIDTH = 80
         car_HEIGHT = 50
-        backgroud = pygame.image.load('imagem__rua.jpg').convert()
+        backgroud = pygame.image.load('imagem_rua.jpg').convert()
         backgroud = pygame.transform.scale(backgroud, (700, 600))
-        carro_1 = pygame.image.load('car1.png').convert_alpha()
+        carro_1 = pygame.image.load('Car1.png').convert_alpha()
         carro_1 = pygame.transform.scale(carro_1, (car_WIDTH, car_HEIGHT))
-        carro_2 = pygame.image.load('car2.png').convert_alpha()
+        carro_2 = pygame.image.load('Car2.png').convert_alpha()
         carro_2 = pygame.transform.scale(carro_2, (car_WIDTH, car_HEIGHT))
-        carro_3 = pygame.image.load('car3.png').convert_alpha()
+        carro_3 = pygame.image.load('Car3.png').convert_alpha()
         carro_3 = pygame.transform.scale(carro_3, (car_WIDTH, car_HEIGHT))
-        carro_4 = pygame.image.load('car4.png').convert_alpha()
+        carro_4 = pygame.image.load('Car4.png').convert_alpha()
         carro_4 = pygame.transform.scale(carro_4, (car_WIDTH, car_HEIGHT))
         fox = pygame.image.load('Fox.png').convert_alpha()
         fox = pygame.transform.scale(fox, (90, 70))
-        foguinho = pygame.image.load('fire.jpg').convert_alpha()
+        foguinho = pygame.image.load('Fire.jpg').convert_alpha()
         foguinho = pygame.transform.scale(foguinho, (80, 50))
-        pygame.mixer.music.load('song.ogg')
-        pygame.mixer.music.set_volume(0.01)
-        pygame.mixer.music.play(-1)
-        pygame.mixer,music,load('')
-        pygame.mixer.music.ser_volume(0.01)
+
+        som_fundo = pygame.mixer.music.load('song.ogg')
+        som_fundo = pygame.mixer.music.set_volume(0.01)
+        som_fundo = pygame.mixer.music.play(-1)
+
+        #fazer esse som funcionar sem tirar o somfundo
+        '''som_crash = pygame.mixer.music.load('Car_crash.mp3')
+        som_crash = pygame.mixer.music.set_volume(0.01)'''
 
         lista_carro = [5, 70, 135, 200, 270, 335, 400, 465]
 
@@ -110,7 +149,6 @@ def game():
                 self.rect.x += self.speedx * self.multiplicador
                 self.rect.y += self.speedy * self.multiplicador
 
-
                 if self.rect.right > car_WIDTH + WIDTH:
                     lista_carro.append(self.rect.y)
                     self.rect.x = -80
@@ -131,7 +169,6 @@ def game():
                 self.speedx = random.randint(-6, -3)
                 self.speedy = 0
                 self.multiplicador = 1
-        
 
             def update(self):
                 self.rect.x += self.speedx * self.multiplicador
@@ -204,7 +241,6 @@ def game():
             all_sprites.add(carro1)
             all_cars.add(carro1)
 
-
         for i in range(3):
             carro2 = cars2(random.choice([carro_2, carro_4]))
             all_sprites.add(carro2)
@@ -222,7 +258,7 @@ def game():
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    running = False
+                    pygame.quit()
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
@@ -256,8 +292,7 @@ def game():
                 jogador.rect.y = 520
                 jogador.score -= 200
                 if lives == 0:
-                    running = False
-                    pygame.mixer.music.stop()
+                    main_out()
 
             hits2 = pygame.sprite.spritecollide(jogador, all_fogos, False)
             if len(hits2) > 0:
@@ -266,8 +301,7 @@ def game():
                 jogador.rect.y = 520
                 jogador.score -= 200
                 if lives == 0:
-                    running = False
-                    pygame.mixer.music.stop()
+                    main_out()
 
             if jogador.score > aumenta_velo:
                 for car in all_cars:
