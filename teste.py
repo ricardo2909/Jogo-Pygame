@@ -130,7 +130,7 @@ def game():
         som_fundo = pygame.mixer.music.set_volume(0.01)
         som_fundo = pygame.mixer.music.play(-1)
 
-        fazer esse som funcionar sem tirar o somfundo
+    
         som_crash = pygame.mixer.Sound('Car_crash.mp3')
         som_crash.set_volume(0.01)
 
