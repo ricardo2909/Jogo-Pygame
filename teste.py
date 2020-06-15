@@ -35,13 +35,6 @@ def main_menu(window):
         pygame.draw.rect(window, (255, 0, 0), botao_2)
         draw_text('Exit', score_font, (255, 255, 255), window, 295, 465)
 
-        if botao_1.collidepoint((mx, my)):
-            if click:
-                game()
-        if botao_2.collidepoint((mx, my)):
-            if click:
-                pygame.quit()
-
         click = False 
 
         for event in pygame.event.get():
@@ -51,13 +44,25 @@ def main_menu(window):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     click = True
+
+        if botao_1.collidepoint((mx, my)):
+            if click:
+                game()
+        if botao_2.collidepoint((mx, my)):
+            if click:
+                pygame.quit()
         
         pygame.display.update()
         mainclock.tick(60)
 
 def main_out(score):
+    
+    som_fail = pygame.mixer.Sound('Fail.wav')
+    som_fail.set_volume(0.7)
+    som_fail.play()
+
     while True:
-        print(score)
+
         som_fundo = pygame.mixer.music.stop()
 
         window.fill((0, 0, 0))
@@ -73,17 +78,12 @@ def main_out(score):
         pygame.draw.rect(window, (255, 0, 0), botao_4)
         draw_text('Exit', score_font, (255, 255, 255), window, 295, 465)
 
-        text_surface = score_font.render("{:08d}".format(score), True, (255, 255, 0))
+        text_surface = score_font.render("{:08d}".format(score), True, (255, 100, 100))
         text_rect = text_surface.get_rect()
-        text_rect.midtop = (150,  620)
+        text_rect.midtop = (350,  230)
         window.blit(text_surface, text_rect)
 
-        #ver botao para funcionar
-        #colocar placar
-
-        click = False
-
-        
+        click = False   
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -127,12 +127,11 @@ def game():
         foguinho = pygame.transform.scale(foguinho, (80, 50))
 
         som_fundo = pygame.mixer.music.load('song.ogg')
-        som_fundo = pygame.mixer.music.set_volume(0.01)
+        som_fundo = pygame.mixer.music.set_volume(0.03)
         som_fundo = pygame.mixer.music.play(-1)
 
-    
-        som_crash = pygame.mixer.Sound('Car_crash.mp3')
-        som_crash.set_volume(0.01)
+        som_crash = pygame.mixer.Sound('Car_crash.wav')
+        som_crash.set_volume(0.2)
 
         lista_carro = [5, 70, 135, 200, 270, 335, 400, 465]
 
@@ -295,6 +294,7 @@ def game():
 
             hits1 = pygame.sprite.spritecollide(jogador, all_cars, False)
             if len(hits1) > 0:
+                som_crash.play()
                 lives -= 1
                 jogador.rect.x = 300
                 jogador.rect.y = 520
