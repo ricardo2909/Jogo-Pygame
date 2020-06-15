@@ -55,8 +55,9 @@ def main_menu(window):
         pygame.display.update()
         mainclock.tick(60)
 
-def main_out():
+def main_out(score):
     while True:
+        print(score)
         som_fundo = pygame.mixer.music.stop()
 
         window.fill((0, 0, 0))
@@ -72,17 +73,17 @@ def main_out():
         pygame.draw.rect(window, (255, 0, 0), botao_4)
         draw_text('Exit', score_font, (255, 255, 255), window, 295, 465)
 
+        text_surface = score_font.render("{:08d}".format(score), True, (255, 255, 0))
+        text_rect = text_surface.get_rect()
+        text_rect.midtop = (150,  620)
+        window.blit(text_surface, text_rect)
+
         #ver botao para funcionar
         #colocar placar
 
         click = False
 
-        if botao_3.collidepoint((mx, my)):
-            if click:
-                game()
-        if botao_4.collidepoint((mx, my)):
-            if click:
-                pygame.quit()
+        
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -91,6 +92,13 @@ def main_out():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     click = True
+
+        if botao_3.collidepoint((mx, my)):
+            if click:
+                game()
+        if botao_4.collidepoint((mx, my)):
+            if click:
+                pygame.quit()
 
         pygame.display.update()
         mainclock.tick(60)
@@ -122,9 +130,9 @@ def game():
         som_fundo = pygame.mixer.music.set_volume(0.01)
         som_fundo = pygame.mixer.music.play(-1)
 
-        #fazer esse som funcionar sem tirar o somfundo
-        '''som_crash = pygame.mixer.music.load('Car_crash.mp3')
-        som_crash = pygame.mixer.music.set_volume(0.01)'''
+        fazer esse som funcionar sem tirar o somfundo
+        som_crash = pygame.mixer.Sound('Car_crash.mp3')
+        som_crash.set_volume(0.01)
 
         lista_carro = [5, 70, 135, 200, 270, 335, 400, 465]
 
@@ -292,7 +300,7 @@ def game():
                 jogador.rect.y = 520
                 jogador.score -= 200
                 if lives == 0:
-                    main_out()
+                    main_out(jogador.score)
 
             hits2 = pygame.sprite.spritecollide(jogador, all_fogos, False)
             if len(hits2) > 0:
@@ -301,7 +309,7 @@ def game():
                 jogador.rect.y = 520
                 jogador.score -= 200
                 if lives == 0:
-                    main_out()
+                    main_out(jogador.score)
 
             if jogador.score > aumenta_velo:
                 for car in all_cars:
