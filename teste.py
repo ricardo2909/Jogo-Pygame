@@ -18,90 +18,102 @@ def draw_text(text, font, color, surface, x, y):
     surface.blit (textobj, textrect)
 
 click = False
+class main():
+    def main_menu(window):
+        branco = (255,255,255)
+        while True:
 
-def main_menu(window):
-    while True:
+            window.fill((0, 0, 0))
+            draw_text('Welcome to Crossy Fox', score_font, (255, 255, 0), window, 65, 130)
+            mx, my = pygame.mouse.get_pos()
 
-        window.fill((0, 0, 0))
-        draw_text('Welcome to Crossy Fox', score_font, (255, 255, 0), window, 65, 130)
-        mx, my = pygame.mouse.get_pos()
+            botao_1 = pygame.Rect(250, 300, 200, 50)
+            botao_2 = pygame.Rect(250, 450, 200, 50)
 
-        botao_1 = pygame.Rect(250, 300, 200, 50)
-        botao_2 = pygame.Rect(250, 450, 200, 50)
+            pygame.draw.rect(window, (255, 0, 0), botao_1)
+            draw_text('Start', score_font, branco, window, 285, 315)
 
-        pygame.draw.rect(window, (255, 0, 0), botao_1)
-        draw_text('Start', score_font, (255, 255, 255), window, 285, 315)
+            pygame.draw.rect(window, (255, 0, 0), botao_2)
+            draw_text('Exit', score_font, branco, window, 295, 465)
 
-        pygame.draw.rect(window, (255, 0, 0), botao_2)
-        draw_text('Exit', score_font, (255, 255, 255), window, 295, 465)
+            click = False 
 
-        click = False 
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1:
+                        click = True
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    click = True
+            if botao_1.collidepoint((mx, my)):
+                if click:
+                    game()
+            if botao_2.collidepoint((mx, my)):
+                if click:
+                    pygame.quit()
+            
+            pygame.display.update()
+            mainclock.tick(60)
 
-        if botao_1.collidepoint((mx, my)):
-            if click:
-                game()
-        if botao_2.collidepoint((mx, my)):
-            if click:
-                pygame.quit()
+    def main_out(score):
         
-        pygame.display.update()
-        mainclock.tick(60)
+        som_fail = pygame.mixer.Sound('Fail.wav')
+        som_fail.set_volume(0.7)
+        som_fail.play()
 
-def main_out(score):
-    
-    som_fail = pygame.mixer.Sound('Fail.wav')
-    som_fail.set_volume(0.7)
-    som_fail.play()
+        while True:
 
-    while True:
+            som_fundo = pygame.mixer.music.stop()
 
-        som_fundo = pygame.mixer.music.stop()
+            window.fill((0, 0, 0))
+            draw_text('GAME OVER', score_font, (255, 255, 0), window, 225, 130)
+            mx, my = pygame.mouse.get_pos()
 
-        window.fill((0, 0, 0))
-        draw_text('GAME OVER', score_font, (255, 255, 0), window, 225, 130)
-        mx, my = pygame.mouse.get_pos()
+            botao_3 = pygame.Rect(200, 300, 300, 50)
+            botao_4 = pygame.Rect(250, 450, 200, 50)
 
-        botao_3 = pygame.Rect(200, 300, 300, 50)
-        botao_4 = pygame.Rect(250, 450, 200, 50)
+            pygame.draw.rect(window, (255, 0, 0), botao_3)
+            draw_text('Play Again', score_font, branco, window, 215, 315)
 
-        pygame.draw.rect(window, (255, 0, 0), botao_3)
-        draw_text('Play Again', score_font, (255, 255, 255), window, 215, 315)
+            pygame.draw.rect(window, (255, 0, 0), botao_4)
+            draw_text('Exit', score_font, branco, window, 295, 465)
 
-        pygame.draw.rect(window, (255, 0, 0), botao_4)
-        draw_text('Exit', score_font, (255, 255, 255), window, 295, 465)
+            text_surface = score_font.render("{:08d}".format(score), True, (255, 100, 100))
+            text_rect = text_surface.get_rect()
+            text_rect.midtop = (350,  230)
+            window.blit(text_surface, text_rect)
 
-        text_surface = score_font.render("{:08d}".format(score), True, (255, 100, 100))
-        text_rect = text_surface.get_rect()
-        text_rect.midtop = (350,  230)
-        window.blit(text_surface, text_rect)
+            click = False   
 
-        click = False   
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1:
+                        click = True
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    click = True
+            if botao_3.collidepoint((mx, my)):
+                if click:
+                    game()
+            if botao_4.collidepoint((mx, my)):
+                if click:
+                    pygame.quit()
 
-        if botao_3.collidepoint((mx, my)):
-            if click:
-                game()
-        if botao_4.collidepoint((mx, my)):
-            if click:
-                pygame.quit()
+            pygame.display.update()
+            mainclock.tick(60)
 
-        pygame.display.update()
-        mainclock.tick(60)
+
+def img_load(img):
+    x=pygame.image.load(img).convert_alpha()
+    return x
+
+
+def transcale(img,x,y):
+    x=pygame.transform.scale(img, (x, y))
+    return x
+
 
 def game():
     running = True
@@ -113,18 +125,18 @@ def game():
         car_HEIGHT = 50
         backgroud = pygame.image.load('imagem_rua.jpg').convert()
         backgroud = pygame.transform.scale(backgroud, (700, 600))
-        carro_1 = pygame.image.load('Car1.png').convert_alpha()
-        carro_1 = pygame.transform.scale(carro_1, (car_WIDTH, car_HEIGHT))
-        carro_2 = pygame.image.load('Car2.png').convert_alpha()
-        carro_2 = pygame.transform.scale(carro_2, (car_WIDTH, car_HEIGHT))
-        carro_3 = pygame.image.load('Car3.png').convert_alpha()
-        carro_3 = pygame.transform.scale(carro_3, (car_WIDTH, car_HEIGHT))
-        carro_4 = pygame.image.load('Car4.png').convert_alpha()
-        carro_4 = pygame.transform.scale(carro_4, (car_WIDTH, car_HEIGHT))
-        fox = pygame.image.load('Fox.png').convert_alpha()
-        fox = pygame.transform.scale(fox, (90, 70))
-        foguinho = pygame.image.load('Fire.jpg').convert_alpha()
-        foguinho = pygame.transform.scale(foguinho, (80, 50))
+        carro_1 = img_load("Car1.png")
+        carro_1 = transcale(carro_1,car_WIDTH, car_HEIGHT)
+        carro_2 = img_load("Car2.png")
+        carro_2 = transcale(carro_2, car_WIDTH, car_HEIGHT)
+        carro_3 = img_load("Car3.png")
+        carro_3 = transcale(carro_3, car_WIDTH, car_HEIGHT)
+        carro_4 = img_load("Car4.png")
+        carro_4 = transcale(carro_4, car_WIDTH, car_HEIGHT)
+        fox = img_load("Fox.png")
+        fox = transcale(fox, 90, 70)
+        foguinho = img_load("fire.jpg")
+        foguinho = transcale(foguinho, 80, 50)
 
         som_fundo = pygame.mixer.music.load('song.ogg')
         som_fundo = pygame.mixer.music.set_volume(0.03)
@@ -134,6 +146,9 @@ def game():
         som_crash.set_volume(0.2)
 
         lista_carro = [5, 70, 135, 200, 270, 335, 400, 465]
+
+        valor_y = 65
+        valor2_y = 520 
 
         lives = 3
         aumenta_vida = 7500
@@ -196,7 +211,7 @@ def game():
                 self.image = img
                 self.rect = self.image.get_rect()
                 self.rect.x = 300
-                self.rect.y = 520
+                self.rect.y = valor2_y
                 self.speedx = 0
                 self.speedy = 0
                 self.score = 0
@@ -207,7 +222,7 @@ def game():
 
                 if self.rect.top < -40:
                     self.rect.x = 300
-                    self.rect.y = 520
+                    self.rect.y = valor2_y
                     self.speedx = 0
                     self.speedy = 0
                     self.score += 150
@@ -269,16 +284,16 @@ def game():
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
-                        jogador.rect.x -= 65 
+                        jogador.rect.x -= valor_y 
                     if event.key == pygame.K_RIGHT:
-                        jogador.rect.x += 65
+                        jogador.rect.x += valor_y
                     if event.key == pygame.K_UP:
                         jogador.score += 50
-                        jogador.rect.y -=65
+                        jogador.rect.y -= valor_y
                     if event.key == pygame.K_DOWN:
-                        if jogador.rect.y < 520:
+                        if jogador.rect.y < valor2_y:
                             jogador.score -= 100
-                            jogador.rect.y +=65
+                            jogador.rect.y += valor_y
             
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_LEFT:
@@ -297,19 +312,19 @@ def game():
                 som_crash.play()
                 lives -= 1
                 jogador.rect.x = 300
-                jogador.rect.y = 520
+                jogador.rect.y = valor2_y
                 jogador.score -= 200
                 if lives == 0:
-                    main_out(jogador.score)
+                    main.main_out(jogador.score)
 
             hits2 = pygame.sprite.spritecollide(jogador, all_fogos, False)
             if len(hits2) > 0:
                 lives -= 1
                 jogador.rect.x = 300
-                jogador.rect.y = 520
+                jogador.rect.y = valor2_y
                 jogador.score -= 200
                 if lives == 0:
-                    main_out(jogador.score)
+                    main.main_out(jogador.score)
 
             if jogador.score > aumenta_velo:
                 for car in all_cars:
@@ -337,4 +352,4 @@ def game():
             pygame.display.update()
             mainclock.tick(60)
 
-main_menu(window)
+main.main_menu(window)
